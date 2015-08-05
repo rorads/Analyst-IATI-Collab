@@ -40,7 +40,7 @@ for i in range(2,len(sys.argv)):
 		#Are there budget elements?
 		if len(budget_elements) > 0:
 			
-			# Create a budget dictionary so that we can compare revised/non revised budgets and put the approapriate one in
+			# Create a budget dictionary so that we can compare revised/non revised budgets and insert the approapriate one
 			found_budgets = {}
 			for budget in budget_elements:
 				if not found_budgets[budget.date]:
