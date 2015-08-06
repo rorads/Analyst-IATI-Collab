@@ -2,14 +2,15 @@ import xml.etree.ElementTree as ET
 import requests
 import sys
 
-'''README: to use this script, you must include 2 or more arguments when calling it. The first must be the IATI identifier of the Organisation
-you wish to examine, and then one or more country codes afterwards. For each counry code provided, a row will be appended into the csv terminal output.'''
+# Canada, WFP, Unicef
+
+'''README: '''
 
 org = sys.argv[1]
 start = '2015-01-01'
 
 # Print the header for csv output
-print("headings")
+print("titles")
 
 # Repeat this process for every country given
 for i in range(2,len(sys.argv)):
@@ -24,42 +25,64 @@ for i in range(2,len(sys.argv)):
 	number_of_activities = 0
 	activities_without_budgets = 0
 	total_committed = 0
-	#start_date = None <---Input date (YYYY-MM-DD)
-	#end_date = None <-----Input date (YYYY-MM-DD)
+	budget_collisions = 0
 
 
-	#For each activity
-	for activity in activities:
-		
-		#count total number of activities
-		number_of_activities += 1
-
-		#Extract budget elements and print how many there are
-		budget_elements = activity.findall("budget")
-		
-		#Are there budget elements?
-		if len(budget_elements) > 0:
+	# If there are any activites published by this organisation for this country
+	if len(activities) > 0:
+		# Then for each of those activies, output all individual budget objects along with there values, value dates, and ranges.
+		for activity in activities:
 			
-			# Create a budget dictionary so that we can compare revised / non-revised budgets and insert the approapriate one
-			found_budgets = {}
-			for budget in budget_elements:
-				if not found_budgets[budget.date]:
-					found_budgets[budget.date] = budget
+			#counter for the budget collisions found in this activity
+			current_budget_collisions = 0
 
-			#are there revised figures?
-				#Yes - use them
-				#No - use the originals
+			#count total number of activities
+			number_of_activities += 1
 
-			#For each budget element used
-				#Is its start period after start_date?
-					#Yes, then is its end period after end_date?	
-						#Yes, then add its amount to the total
+			#Extract budget elements and print how many there are
+			budget_elements = activity.findall("budget")
+			
+			#Are there budget elements?
+			if len(budget_elements) > 0:
+				# Create a budget dictionary so that we can compare revised / non-revised budgets and insert the approapriate one
+				non_colliding_budgets = {}
+				# For each budget element
+				for budget in budget_elements:
+					# Store whether it's revised or original
+					b_type = budget.attrib['type']
+					# For each detail of the budget
+					for child in budget:
+						# look at the budgets start and end dates to make sure that it's unique
+						date_string = ""
+						# if the detail is not the value element
+						if child.tag != 'value':
+							# make a key out of the start and end dates of the budget
+							date_string = date_string + child.attrib['iso-date']
+							# if the key isn't already there, then store this budget agains the key
+							if date_string not in non_colliding_budgets.keys():
+								non_colliding_budgets[date_string] = budget
+							# otherwise
+							else:
+								# record the collision
+								current_budget_collisions += 1
+								# and if the budget type is 'revised', overwrite the value in the dictionary
+								if b_type == 'revised':
+									non_colliding_budgets[date_string] = budget
+			else:
+				activities_without_budgets += 1
+			
+			count = 0
+			for prime_budget in non_colliding_budgets:
+				count += 1
+				print count, prime_budget.text
 
-		#If there aren't any budget elements, exclude the activity, and add a number to the count of non-budgeted activities
-		else:
-			activities_without_budgets += 1
+			#add the budget collisions to the total
+			budget_collisions += current_budget_collisions
+		
+						
+		#Output the total, activities_without_budgets
+		percent = float(number_of_activities - activities_without_budgets) / float(number_of_activities) * 100
+		print "%s,%s,%s,%i,%i,%f,%i,%s" % (org, country, start, number_of_activities, activities_without_budgets, percent, budget_collisions, response.url)
 
-					
-	#Output the total, activities_without_budgets
-	percent = float(number_of_activities - activities_without_budgets) / float(number_of_activities) * 100
-	print "%s,%s,%s,%i,%i,%f,%s" % (org, country, start, number_of_activities, activities_without_budgets, percent, response.url)
+	# If there are no activities, output and error message
+	else: print "%s has no activities for %s!" % (org, country)
