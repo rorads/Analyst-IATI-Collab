@@ -10,7 +10,7 @@ org = sys.argv[1]
 start = '2015-01-01'
 
 # Print the header for csv output
-print("titles")
+print("orgID, country, budget-start, budget-end, value, currency, valuation_date")
 
 # Repeat this process for every country given
 for i in range(2,len(sys.argv)):
@@ -38,6 +38,14 @@ for i in range(2,len(sys.argv)):
 
 			#count total number of activities
 			number_of_activities += 1
+			
+			# percentage of this activity that applies to the country of interest
+			country_weighting = 100
+			recipient_countries = activity.findall("recipient-country")
+			if len(recipient_countries) > 1:
+				for countries in recipient_countries:
+					if countries.attrib['code'] == country:
+						country_weighting = (countries.attrib['percentage'])
 
 			#Extract budget elements and print how many there are
 			budget_elements = activity.findall("budget")
@@ -52,37 +60,21 @@ for i in range(2,len(sys.argv)):
 					b_type = budget.attrib['type']
 					# For each detail of the budget
 					for child in budget:
-						# look at the budgets start and end dates to make sure that it's unique
-						date_string = ""
 						# if the detail is not the value element
-						if child.tag != 'value':
-							# make a key out of the start and end dates of the budget
-							date_string = date_string + child.attrib['iso-date']
-							# if the key isn't already there, then store this budget agains the key
-							if date_string not in non_colliding_budgets.keys():
-								non_colliding_budgets[date_string] = budget
-							# otherwise
-							else:
-								# record the collision
-								current_budget_collisions += 1
-								# and if the budget type is 'revised', overwrite the value in the dictionary
-								if b_type == 'revised':
-									non_colliding_budgets[date_string] = budget
+						if child.tag == 'period-start':
+							budget_start = child.attrib['iso-date']
+						elif child.tag == 'period-end':
+							budget_end = child.attrib['iso-date']
+						elif child.tag == 'value':
+							valuation_date = child.attrib['value-date']
+							budget_value = float(child.text)/100.0* float(country_weighting)
+					#Output the budgets
+					print "%s,%s,%s,%s,%f,%s" % (org, country, budget_start, budget_end, budget_value, valuation_date)
+
+
 			else:
 				activities_without_budgets += 1
-			
-			count = 0
-			for prime_budget in non_colliding_budgets:
-				count += 1
-				print count, prime_budget.text
-
-			#add the budget collisions to the total
-			budget_collisions += current_budget_collisions
-		
 						
-		#Output the total, activities_without_budgets
-		percent = float(number_of_activities - activities_without_budgets) / float(number_of_activities) * 100
-		print "%s,%s,%s,%i,%i,%f,%i,%s" % (org, country, start, number_of_activities, activities_without_budgets, percent, budget_collisions, response.url)
 
 	# If there are no activities, output and error message
 	else: print "%s has no activities for %s!" % (org, country)

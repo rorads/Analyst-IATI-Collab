@@ -61,7 +61,6 @@ for i in range(2,len(sys.argv)):
 					if child.tag != 'value':
 						date_string = date_string + child.attrib['iso-date']
 					
-						#print date_string
 						if date_string not in found_budgets.keys():
 							found_budgets[date_string] = 1 
 						else:	current_budget_collisions += 1
