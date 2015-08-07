@@ -34,9 +34,8 @@ for i in range(2,len(sys.argv)):
 	if len(activities) > 0:
 		# Then for each of those activies, output all individual budget objects along with there values, value dates, and ranges.
 		for activity in activities:
-			
-			# counter for the budget collisions found in this activity
-			current_budget_collisions = 0
+
+			currency = activity.attrib['default-currency']
 
 			# count total number of activities
 			number_of_activities += 1
@@ -67,8 +66,7 @@ for i in range(2,len(sys.argv)):
 							valuation_date = child.attrib['value-date']
 							budget_value = float(child.text)/100.0* float(country_weighting)
 					# Output the relevent information for each budget
-					temp_currency_val = " "
-					print "%s,%s,%s,%s,%f,%s,%s" % (org, country, budget_start, budget_end, budget_value, temp_currency_val, valuation_date)
+					print "%s,%s,%s,%s,%f,%s,%s" % (org, country, budget_start, budget_end, budget_value, currency, valuation_date)
 
 	# If there are no activities, output and error message
 	else: print "%s has no activities for %s!" % (org, country)
