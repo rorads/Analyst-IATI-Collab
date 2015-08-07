@@ -67,7 +67,8 @@ for i in range(2,len(sys.argv)):
 							valuation_date = child.attrib['value-date']
 							budget_value = float(child.text)/100.0* float(country_weighting)
 					# Output the relevent information for each budget
-					print "%s,%s,%s,%s,%f,%s" % (org, country, budget_start, budget_end, budget_value, valuation_date)
+					temp_currency_val = " "
+					print "%s,%s,%s,%s,%f,%s,%s" % (org, country, budget_start, budget_end, budget_value, temp_currency_val, valuation_date)
 
 	# If there are no activities, output and error message
 	else: print "%s has no activities for %s!" % (org, country)
