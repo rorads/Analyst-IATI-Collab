@@ -92,4 +92,4 @@ The resulting spreadsheet looks like this:
 </tbody></table>
 
 ### Current Bugs
-* It doesn't actually output the currency at the moment, just a space.
+* initial_coverage_review.py breaks if there is no activity between a given publisher and a given country
