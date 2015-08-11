@@ -7,7 +7,6 @@ you wish to examine, and then one or more country codes afterwards. The csv outp
 by the percentage assigned to the country of interest within the given activity.'''
 
 org = sys.argv[1]
-start = '2015-01-01'
 
 # Print the header for csv output
 print("orgID, country, budget-start, budget-end, value, currency, valuation_date")
@@ -18,7 +17,7 @@ for i in range(2,len(sys.argv)):
 	# The following lines translate the user provided arguments into an html api call for the IATI registry, download an xml response,
 	# and then parse it into memory
 	country = sys.argv[i]
-	payload = {'reporting-org': org, 'recipient-country': country, 'end-date__gt': start, 'stream':'True'}
+	payload = {'reporting-org': org, 'recipient-country': country, 'stream':'True'}
 	response = requests.get("http://datastore.iatistandard.org/api/1/access/activity.xml", params=payload)
 	result = ET.fromstring(response.content)
 	activities = result.findall("./iati-activities/iati-activity")
