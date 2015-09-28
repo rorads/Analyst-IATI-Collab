@@ -2,8 +2,10 @@ import xml.etree.ElementTree as ET
 import requests
 import sys
 import pdb
+import json
 import dateutil.parser
-import pdb
+from geopy.geocoders import Nominatim
+geolocator = Nominatim()
 
 org = sys.argv[1]
 
@@ -18,13 +20,13 @@ f = open('output_dynamic%s.csv' % org, 'w')
 
 # Print the header for csv output
 #print("orgID, country, location-start, location-end, value, currency, valuation_date")
-f.write("IATI-Identifier,location name,description,point srs name,coordinates,\n")
+f.write("IATI-Identifier,location name,description,point srs name,coordinates,address\n")
 
 
 # The following lines translate the user provided arguments into an html api call for the IATI registry, download an xml response,
 # and then parse it into memory
 print '++Requesting IATI XML Data for %s++' % org
-payload = {'reporting-org': org, 'stream':'True'}
+payload = {'reporting-org': org, 'limit':'300'} #'stream':'True', 
 response = requests.get("http://datastore.iatistandard.org/api/1/access/activity.xml", params=payload)
 print response.url
 result = ET.fromstring(response.content)
@@ -56,6 +58,14 @@ def out_of_scope(dates):
 			else:
 				return False
 
+def get_country_code(coordinate_string):
+	# put method here AIzaSyDuihORQ83RaQ-bkxJz-PirUUoi0YHR_x4
+	coordinates = coordinate_string.split()
+
+	location = geolocator.reverse('%s, %s' % (coordinates[0], coordinates[1]))
+
+	return location.address
+
 
 print '++Filtering Activities++'
 # If there are any activites published by this organisation for this country
@@ -65,7 +75,7 @@ if len(activities) > 0:
 
 		date_list = activity.findall('activity-date')
 
-		if out_of_scope(date_list) or len(date_list) < 1:
+		if (out_of_scope(date_list) or len(date_list) < 1):
 			#print '-\t-\t-\t-\t-\t'
 			continue
 
@@ -94,8 +104,13 @@ if len(activities) > 0:
 				output.append(location_element.find('point').attrib['srsName']) 
 				output.append('\",\"')
 				output.append(location_element.find('point').find('pos').text)
-				output.append('\"\n')
+				output.append('\",\"')
 
+				location = get_country_code(location_element.find('point').find('pos').text)
+				pdb.set_trace()
+				output.append(location)
+				
+				output.append('\"\n')
 				
 				f.write(''.join(output).encode('ascii', 'ignore'))
 			
