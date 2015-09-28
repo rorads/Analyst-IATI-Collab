@@ -7,4 +7,4 @@ This project is a hacky script with the following methodology:
 3. From the filtered activities, the location name, description, point srs name, and location coordinates are extracted from the `<location>` elements (where the activities have them) and are outputted in CSV.
 4. Future steps: use the coordinates to use the [Google Maps Geocoding API](https://developers.google.com/maps/documentation/geocoding/intro?csw=1) to retrieve detailed location data and return that alonside the above.
 
-> NOTES: This script pulls up to 20MB of data from a datastore that isn't terribly fast, so it can be*slow* when you run it with a publisher like DFID, to the tune of a couple of minutes.
+> NOTE: This script pulls up to 20MB of data from a datastore that isn't terribly fast, so it can be*slow* when you run it with a publisher like DFID, to the tune of a couple of minutes.
