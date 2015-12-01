@@ -1,5 +1,5 @@
 <iati-activities generated-datetime='2015-08-04T17:47:42.534604'>
-    <iati-activity iati-extra:version="1.03" version="1.03" last-updated-datetime="2015-07-29T00:00:00" xml:lang="en" default-currency="USD" hierarchy="2">
+    <iati-activity version="1.03" last-updated-datetime="2015-07-29T00:00:00" xml:lang="en" default-currency="USD" hierarchy="2">
         <reporting-org ref="SE-0" type="10">Sweden</reporting-org>
         <participating-org ref="SE-6" type="10" role="Extending">Swedish International Development Cooperation Agency</participating-org>
         <participating-org ref="SE-0" type="10" role="Funding">Sweden</participating-org>
@@ -65,11 +65,7 @@
                 <description>"General Economic</description>
             </budget-item>
         </country-budget-items>
-        <sida:strategy xmlns:sida="http://sida.se/ns/strategy#" code="02901">
-            <sida:title>Mozambique 2008-2015</sida:title>
-            <sida:titleSV>Mocambique 2008-2015</sida:titleSV>
-        </sida:strategy>
-    </iati-activity><iati-activity iati-extra:version="1.03" version="1.03" last-updated-datetime="2015-07-29T00:00:00" xml:lang="en" default-currency="USD" hierarchy="2">
+    </iati-activity><iati-activity version="1.03" last-updated-datetime="2015-07-29T00:00:00" xml:lang="en" default-currency="USD" hierarchy="2">
     <reporting-org ref="SE-0" type="10">Sweden</reporting-org>
     <participating-org ref="SE-6" type="10" role="Extending">Swedish International Development Cooperation Agency</participating-org>
     <participating-org ref="SE-0" type="10" role="Funding">Sweden</participating-org>
@@ -125,11 +121,7 @@
             <description>"General Economic</description>
         </budget-item>
     </country-budget-items>
-    <sida:strategy xmlns:sida="http://sida.se/ns/strategy#" code="02901">
-        <sida:title>Mozambique 2008-2015</sida:title>
-        <sida:titleSV>Mocambique 2008-2015</sida:titleSV>
-    </sida:strategy>
-</iati-activity><iati-activity iati-extra:version="1.03" version="1.03" last-updated-datetime="2015-07-29T00:00:00" xml:lang="en" default-currency="USD" hierarchy="2">
+</iati-activity><iati-activity version="1.03" last-updated-datetime="2015-07-29T00:00:00" xml:lang="en" default-currency="USD" hierarchy="2">
     <reporting-org ref="SE-0" type="10">Sweden</reporting-org>
     <participating-org ref="SE-6" type="10" role="Extending">Swedish International Development Cooperation Agency</participating-org>
     <participating-org ref="SE-0" type="10" role="Funding">Sweden</participating-org>
@@ -191,11 +183,7 @@
     </planned-disbursement>
     <related-activity ref="SE-0-SE-6-A1300223" type="1">Parent</related-activity>
     <conditions attached="0"/>
-    <sida:strategy xmlns:sida="http://sida.se/ns/strategy#" code="00000">
-        <sida:title>No strategy</sida:title>
-        <sida:titleSV>Ingen strategi</sida:titleSV>
-    </sida:strategy>
-</iati-activity><iati-activity iati-extra:version="1.03" version="1.03" last-updated-datetime="2015-07-29T00:00:00" xml:lang="en" default-currency="USD" hierarchy="2">
+</iati-activity><iati-activity version="1.03" last-updated-datetime="2015-07-29T00:00:00" xml:lang="en" default-currency="USD" hierarchy="2">
     <reporting-org ref="SE-0" type="10">Sweden</reporting-org>
     <participating-org ref="SE-6" type="10" role="Extending">Swedish International Development Cooperation Agency</participating-org>
     <participating-org ref="SE-0" type="10" role="Funding">Sweden</participating-org>
